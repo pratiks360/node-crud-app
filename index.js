@@ -1,10 +1,11 @@
 const express=require('express');
+const bodyParser = require('body-parser')
 const { Client } = require('pg');
 const client = new Client({
-    user: 'squad1',
-    host: '3.143.104.1',
-    database: 'bootcamp',
-    password: 'Squ@d456',
+    user: 'sreevanir',
+    host: 'localhost',
+    database: 'postgres',
+    password: 'admin',
     port: 5432,
 });
 client.connect(function(err){
@@ -16,9 +17,13 @@ const db = require('./queries')
 
 const app=express()
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }))
+
+
 app.get('/users', db.getUsers)
-app.get('/users/:id', db.getUserById)
- app.post('/users', db.createUser)
+app.get('/users/:id', db.getUserById);
+app.post('/users', db.createUser)
 // app.put('/users/:id', db.updateUser)
 // app.delete('/users/:id', db.deleteUser)
 

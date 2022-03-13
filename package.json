@@ -10,7 +10,17 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1",
-    "oracledb": "^5.1.0"
-  }
+    "express": "^4.17.2",
+    "oracledb": "^5.1.0",
+    "pg": "^8.7.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pratiks360/node-crud-app.git"
+  },
+  "bugs": {
+    "url": "https://github.com/pratiks360/node-crud-app/issues"
+  },
+  "homepage": "https://github.com/pratiks360/node-crud-app#readme",
+  "devDependencies": {}
 }

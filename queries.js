@@ -7,24 +7,24 @@ const pool = new Pool({
   port: 5432,
 })
 
-const query = `
-CREATE TABLE entity_facts (
-    id int,
-    entity varchar,
-    details varchar    
-);
-`;
+// const query = `
+// CREATE TABLE entity (
+//     id int,
+//     entity varchar,
+//     details varchar    
+// );
+// `;
 
-pool.query(query, (err, res) => {
-  if (err) {
-      console.error(err);
-      return;
-  }
-  console.log('Table is successfully created');  
-});
+// pool.query(query, (err, res) => {
+//   if (err) {
+//       console.error(err);
+//       return;
+//   }
+//   console.log('Table is successfully created');  
+// });
 
-const getUsers = (request, response) => {
-  pool.query('SELECT * FROM entity_facts ORDER BY id ASC', (error, results) => {
+const getAllCustomers= (request, response) => {
+  pool.query('SELECT * FROM customer ORDER BY Custid ASC', (error, results) => {
     if (error) {
       throw error
     }
@@ -32,13 +32,8 @@ const getUsers = (request, response) => {
   })
 }
 
-const getUserById = (request, response) => {
-  
-  
-  const id = request.params.id;
-  
-
-  pool.query('SELECT * FROM entity_facts WHERE id = $1', [id], (error, results) => {
+const getAllOrders= (request, response) => {
+  pool.query('SELECT * FROM ORDERS ORDER BY orderId ASC', (error, results) => {
     if (error) {
       throw error
     }
@@ -46,22 +41,75 @@ const getUserById = (request, response) => {
   })
 }
 
-const createUser = (request, response) => {
-  const { id, entity, details } = request.body
+const deleteCustomerById = (request, response) => {
 
-  pool.query('INSERT INTO entity_facts (id, entity, details) VALUES ($1, $2, $3)', [id, entity, details], (error, results) => {
+  const custid = request.params.orderid;
+ 
+pool.query('delete FROM  customer WHERE custid = $1', [orderid], (error, results) => {
     if (error) {
       throw error
     }
-    response.status(201).send(`User added with ID: ${id}`)
+    response.status(200).json(results.rows)
+  })
+}
+
+const deleteOrderById = (request, response) => {
+  
+  
+  const orderid = request.params.orderid;
+  
+
+  pool.query('delete FROM  orders WHERE orderid = $1', [orderid], (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(200).json(results.rows)
+  })
+}
+
+const addCustomer = (request, response) => {
+
+  const { Custid, custFirstName, custSecondName,custEmail, custPhone, custAddress} = request.body
+
+  pool.query('INSERT INTO customer (Custid, custFirstName, custSecondName ,custEmail, custPhone, custAddress) VALUES ($1, $2, $3, $4, $5, $6)', [Custid, custFirstName, custSecondName, custEmail, custPhone, custAddress], (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(201).send(`Customer added with ID: ${Custid}`)
+  })
+}
+
+const addOrder = (request, response) => {
+  const { Custid, orderId, Ordername, Orderprice,orderDate,deliveryDate} = request.body
+
+  pool.query('INSERT INTO orders (Custid, orderId, Ordername ,Orderprice, orderDate, deliveryDate) VALUES ($1, $2, $3, $4, $5, $6)', [Custid, orderId, Ordername, Orderprice, orderDate, deliveryDate], (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(201).send(`orders added with customer ID: ${Custid}`)
+  })
+}
+
+const addExpense = (request, response) => {
+  const { expense_type, amount, expenseDate } = request.body
+
+  pool.query('INSERT INTO expense (expense_type, amount, expenseDate) VALUES ($1, $2, $3)', [expense_type, amount, expenseDate], (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(201).send(`expenses added with expense_type: ${expense_type}`)
   })
 }
 
 
 module.exports = {
-  getUsers,
-  getUserById,
-  createUser
+  getAllCustomers,
+  getAllOrders,
+  deleteCustomerById,
+  deleteOrderById,
+  addOrder,
+  addCustomer,
+  addExpense
   // updateUser,
   // deleteUser,
 }

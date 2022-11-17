@@ -21,12 +21,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }))
 
 
-app.get('/users', db.getUsers)
-app.get('/users/:id', db.getUserById);
-app.post('/users', db.createUser)
-// app.put('/users/:id', db.updateUser)
-// app.delete('/users/:id', db.deleteUser)
-
+ app.post('/addCustomers', db.addCustomer)
+ app.post('/addOrders',db.addOrder)
+ app.post('/addExpenses',db.addExpense)
+ app.get('/getAllCustomers',db.getAllCustomers)
+ app.get('/getAllOrders',db.getAllOrders)
+ app.delete('/deleteCustomer/:custid',db.deleteCustomerById)
+ app.delete('/deleteOrders/:orderid',db.deleteOrderById)
 
 app.get('/', (request, response) => {
   response.json({ info: 'Node.js, Express, and Postgres API' })
